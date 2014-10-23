@@ -17,19 +17,22 @@
   (last (re-matches #"(http://)*(.*)" url)))
 
 (defn run-status
-  "Runs the check for domain against isitup's API. Response codes include the
-  following (from the isitup API Docs - https://isitup.org/api/api.html):
+  "Runs the check for every argument in arguments against isitup's API.
+  Response codes include the following (from the isitup API Docs -
+  https://isitup.org/api/api.html):
   1 - Website is alive.
   2 - Website appears down.
   3 - Domain was not valid."
-  [domain]
-  (let [res (client/get (str api (sanitize-url domain) ".json"))
-        parsed (json/read-str (:body res))
-        status (get parsed "status_code")]
-    (case status
-      1 (println "✔ Up")
-      2 (println "✖ Down")
-      3 (println "⚠ Invalid Domain"))))
+  [arguments]
+  (doseq [domain arguments]
+    (let [sanitized (sanitize-url domain)
+          res (client/get (str api sanitized ".json"))
+          parsed (json/read-str (:body res))
+          status (get parsed "status_code")]
+      (case status
+        1 (println (str "✔ Up: " sanitized))
+        2 (println (str "✖ Down: " sanitized))
+        3 (println (str "⚠ Invalid Domain: " sanitized))))))
 
 (defn -main
   [& args]
@@ -44,6 +47,6 @@
       (:version options)
       (println (str "isitup-cli's version: " (System/getProperty "isitup.version")))
       
-      (= (count arguments) 1)
-      (run-status (first arguments)))
-      (System/exit 0)))
+      (>= (count arguments) 1)
+      (run-status arguments))
+    (System/exit 0)))
