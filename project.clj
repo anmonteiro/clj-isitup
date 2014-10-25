@@ -1,4 +1,4 @@
-(defproject isitup "0.1.0"
+(defproject isitup "0.3.0"
   :description "isitup.org API command line consumer"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"

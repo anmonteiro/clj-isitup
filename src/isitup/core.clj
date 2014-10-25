@@ -38,14 +38,14 @@
   [& args]
   (let [{:keys [options arguments summary]} (parse-opts args cli-options)]
     (cond
-      (:help options)
+      (:version options)
+      (println (str "isitup-cli's version: " (System/getProperty "isitup.version")))
+      
+      (or (:help options) (= (count arguments) 0))
       (do
         (println "~~ IsItUp-CLI ~~")
         (println "Usage: isitup [-v] [-h] domain") 
         (println summary))
-      
-      (:version options)
-      (println (str "isitup-cli's version: " (System/getProperty "isitup.version")))
       
       (>= (count arguments) 1)
       (run-status arguments))
