@@ -9,4 +9,5 @@
                  [org.clojure/data.json "0.2.5"]]
   :main ^:skip-aot isitup.core
   :target-path "target/%s"
+  :clean-targets [:target-path]
   :profiles {:uberjar {:aot :all}})
