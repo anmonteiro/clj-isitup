@@ -1,36 +1,35 @@
-# isitup-cli
+# isitup-cli [![Build Status](https://travis-ci.org/anmonteiro/isitup.svg)](https://travis-ci.org/anmonteiro/isitup) [![Dependencies Status](http://jarkeeper.com/anmonteiro/isitup/status.svg)](http://jarkeeper.com/anmonteiro/isitup)
 
-FIXME: description
+[isitup.org](http://isitup.org) API client & command-line tool.
 
 ## Installation
 
-Download from http://example.com/FIXME.
+TODO
 
 ## Usage
 
-FIXME: explanation
+For now (to check [Google](http://google.com)):
 
-    $ java -jar isitup-cli-0.1.0-standalone.jar [args]
+    $ lein trampoline run -- google.com
+
+For multiple sites:
+
+    $ lein trampoline run -- google.com facebook.com
 
 ## Options
 
-FIXME: listing of options this app accepts.
+```
+  Usage: isitup [-v] [-h] domain
+  -h, --help     Show help
+  -v, --version  Show isitup-cli's version
+```
 
 ## Examples
 
-...
 
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
 
 ## License
 
-Copyright © 2014 FIXME
+Copyright © 2015 António Nuno Monteiro
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License version 1.0 (see [LICENSE](./LICENSE)).
