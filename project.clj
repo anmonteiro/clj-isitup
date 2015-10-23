@@ -1,5 +1,5 @@
-(defproject isitup "0.3.0"
-  :description "isitup.org API command line consumer"
+(defproject isitup "0.5.0-SNAPSHOT"
+  :description "isitup.org API client and command line tool"
   :url "https://github.com/anmonteiro/isitup-cli"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
@@ -8,8 +8,9 @@
                  ;; need to use a SNAPSHOT version because of
                  ;; https://github.com/dakrone/clj-http/issues/275
                  [clj-http "3.0.0-SNAPSHOT"]
+                 [clojurewerkz/urly "1.0.0"]
                  [org.clojure/data.json "0.2.6"]]
-  :main ^:skip-aot isitup.core
+  :main ^:skip-aot isitup.cli
   :target-path "target/%s"
   :clean-targets [:target-path]
   :profiles {:uberjar {:aot :all}})

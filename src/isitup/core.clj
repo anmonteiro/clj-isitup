@@ -1,52 +1,29 @@
 (ns isitup.core
-  (:require [clj-http.client :as client]
-            [clojure.tools.cli :refer [parse-opts]]
+  (:require [clojurewerkz.urly.core :as urly]
+            [clj-http.client :as client]
             [clojure.data.json :as json])
-  (:gen-class :main true))
+  (:import [java.net URI URL]))
 
 
-(def api "http://isitup.org/")
+(def api "https://isitup.org/")
 
-(def cli-options
-  [["-h" "--help" "Show help" :flag true :default false]
-   ["-v" "--version" "Show isitup-cli's version" :flag true :default false]])
-
+;; ToDo: parse URL ports correctly
+;; ToDo: test URL sanitization
 (defn- sanitize-url
   "Removes the \"http://\" part of the url, if any"
-  [url]
-  (last (re-matches #"(http://)*(.*)" url)))
+  [s]
+  (-> (urly/url-like s)
+      (urly/host-of)))
+
+(defn get-domain-status
+  "Runs a domain check"
+  [domain]
+  (let [sanitized (sanitize-url domain)
+        res (client/get (str api sanitized ".json"))
+        parsed (json/read-str (:body res) :key-fn keyword)]
+    parsed))
 
 (defn run-status
-  "Runs the check for every argument in arguments against isitup's API.
-  Response codes include the following (from the isitup API Docs -
-  https://isitup.org/api/api.html):
-  1 - Website is alive.
-  2 - Website appears down.
-  3 - Domain was not valid."
+  "Runs the check for every argument in arguments against isitup's API."
   [arguments]
-  (doseq [domain arguments]
-    (let [sanitized (sanitize-url domain)
-          res (client/get (str api sanitized ".json"))
-          parsed (json/read-str (:body res))
-          status (get parsed "status_code")]
-      (case status
-        1 (println (str "✔ Up: " sanitized))
-        2 (println (str "✖ Down: " sanitized))
-        3 (println (str "⚠ Invalid Domain: " sanitized))))))
-
-(defn -main
-  [& args]
-  (let [{:keys [options arguments summary]} (parse-opts args cli-options)]
-    (cond
-      (:version options)
-      (println (str "isitup-cli's version: " (System/getProperty "isitup.version")))
-      
-      (or (:help options) (= (count arguments) 0))
-      (do
-        (println "~~ IsItUp-CLI ~~")
-        (println "Usage: isitup [-v] [-h] domain") 
-        (println summary))
-      
-      (>= (count arguments) 1)
-      (run-status arguments))
-    (System/exit 0)))
+  (map get-domain-status arguments))
