@@ -18,10 +18,13 @@
 (defn get-domain-status
   "Runs a domain check"
   [domain]
-  (let [sanitized (sanitize-url domain)
-        res (client/get (str api sanitized ".json"))
-        parsed (json/read-str (:body res) :key-fn keyword)]
-    parsed))
+  (try
+    (let [sanitized (sanitize-url domain)
+          res (client/get (str api sanitized ".json"))
+          parsed (json/read-str (:body res) :key-fn keyword)]
+      parsed)
+  (catch Exception e
+    (throw (ex-info "API unreachable" (ex-data e))))))
 
 (defn run-status
   "Runs the check for every argument in arguments against isitup's API."

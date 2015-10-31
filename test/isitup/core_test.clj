@@ -32,7 +32,14 @@
                             \"response_time\": 0.038\n}"})}
       (fn []
         (let [res (isup/get-domain-status "google.com")]
-          (is (= (assoc mock-status :domain "google.com") res)))))))
+          (is (= (assoc mock-status :domain "google.com") res)))))
+    (with-redefs-fn
+      {#'client/get
+        (fn [domain] (throw (ex-info "clj-http: status 500" {:status 500})))}
+      (fn []
+        (is (thrown-with-msg? RuntimeException
+                              #"API unreachable"
+                              (isup/get-domain-status "google.com")))))))
 
 (deftest cli
   (testing "API responses"
