@@ -13,33 +13,29 @@
 
 (deftest api-calls
   (testing "HTTP requests"
-    (with-redefs-fn
-      {#'isup/get-domain-status
-        (fn [domain] (assoc mock-status :domain domain))}
-      (fn []
-        (let [res (isup/run-status ["google.com"])]
-          (is (seq? res))
-          (is (= (-> res (first) :domain) "google.com")))
-        (let [res (isup/run-status ["google.com" "sapo.pt"])]
-          (is (seq? res))
-          (is (= (-> res (second) :response_code) 200)))))
-    (with-redefs-fn
-      {#'client/get
+    (with-redefs
+      [isup/get-domain-status (fn [domain] (assoc mock-status :domain domain))]
+      (let [res (isup/run-status ["google.com"])]
+        (is (seq? res))
+        (is (= (-> res (first) :domain) "google.com")))
+      (let [res (isup/run-status ["google.com" "sapo.pt"])]
+        (is (seq? res))
+        (is (= (-> res (second) :response_code) 200))))
+    (with-redefs
+      [client/get
         (fn [domain] {:body "{\n    \"domain\": \"google.com\",\n
                             \"port\": 80,\n    \"status_code\": 1,\n
                             \"response_ip\": \"127.0.0.1\",\n
                             \"response_code\": 200,\n
-                            \"response_time\": 0.038\n}"})}
-      (fn []
-        (let [res (#'isup/get-domain-status "google.com")]
-          (is (= (assoc mock-status :domain "google.com") res)))))
-    (with-redefs-fn
-      {#'client/get
-        (fn [domain] (throw (ex-info "clj-http: status 500" {:status 500})))}
-      (fn []
-        (is (thrown-with-msg? RuntimeException
-                              #"API unreachable"
-                              (#'isup/get-domain-status "google.com")))))))
+                            \"response_time\": 0.038\n}"})]
+      (let [res (#'isup/get-domain-status "google.com")]
+        (is (= (assoc mock-status :domain "google.com") res))))
+    (with-redefs
+      [client/get
+        (fn [domain] (throw (ex-info "clj-http: status 500" {:status 500})))]
+      (is (thrown-with-msg? RuntimeException
+                            #"API unreachable"
+                            (#'isup/get-domain-status "google.com"))))))
 
 (deftest cli
   (testing "API responses"
