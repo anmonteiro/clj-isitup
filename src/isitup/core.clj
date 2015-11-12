@@ -15,7 +15,7 @@
   (-> (urly/url-like s)
       (urly/host-of)))
 
-(defn get-domain-status
+(defn- get-domain-status
   "Runs a domain check"
   [domain]
   (try

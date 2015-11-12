@@ -4,7 +4,7 @@
   (:gen-class :main true))
 
 
-(def cli-options
+(def ^:private cli-options
   [["-h" "--help" "Show help" :flag true :default false]
    ["-v" "--version" "Show isitup-cli's version" :flag true :default false]])
 
@@ -13,7 +13,7 @@
   (println "Usage: isitup [-v] [-h] domain")
   (println cli-summary))
 
-(defn get-output
+(defn- get-output
   "Based on the API's response code, print a message to the console. Response
   codes include the following (from the API Docs - https://isitup.org/api/api.html):
   1 - Website is alive.
@@ -25,7 +25,7 @@
     2 (str "✖ Down: " domain)
     3 (str "⚠ Invalid Domain: " domain)))
 
-(defn print-status [arguments]
+(defn- print-status [arguments]
   (let [status (isup/run-status arguments)]
     (doseq [res status]
       (println (get-output res)))))

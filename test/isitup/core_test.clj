@@ -31,7 +31,7 @@
                             \"response_code\": 200,\n
                             \"response_time\": 0.038\n}"})}
       (fn []
-        (let [res (isup/get-domain-status "google.com")]
+        (let [res (#'isup/get-domain-status "google.com")]
           (is (= (assoc mock-status :domain "google.com") res)))))
     (with-redefs-fn
       {#'client/get
@@ -39,13 +39,13 @@
       (fn []
         (is (thrown-with-msg? RuntimeException
                               #"API unreachable"
-                              (isup/get-domain-status "google.com")))))))
+                              (#'isup/get-domain-status "google.com")))))))
 
 (deftest cli
   (testing "API responses"
     (let [website "google.com"
           response (assoc mock-status :domain website)]
-      (are [res output] (= (cli/get-output res) output)
+      (are [res output] (= (#'cli/get-output res) output)
         response (str "✔ Up: " website)
         (assoc response :status_code 2) (str "✖ Down: " website)
         (assoc response :status_code 3) (str "⚠ Invalid Domain: " website)))))
