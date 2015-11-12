@@ -27,6 +27,11 @@
     (throw (ex-info "API unreachable" (ex-data e))))))
 
 (defn run-status
-  "Runs the check for every argument in arguments against isitup's API."
+  "Runs the check for every argument in arguments against isitup's API. Returns
+  a (lazy) sequence of response maps"
   [arguments]
-  (map get-domain-status arguments))
+  (let [args (cond
+               (nil? arguments) []
+               (sequential? arguments) arguments
+               :else [arguments])]
+    (map get-domain-status args)))

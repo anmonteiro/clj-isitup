@@ -29,7 +29,11 @@
                             \"response_code\": 200,\n
                             \"response_time\": 0.038\n}"})]
       (let [res (#'isup/get-domain-status "google.com")]
-        (is (= (assoc mock-status :domain "google.com") res))))
+        (is (= (assoc mock-status :domain "google.com") res)))
+      (let [res (isup/run-status "google.com")]
+        (is (= (list (assoc mock-status :domain "google.com")) res)))
+      (let [res (isup/run-status nil)]
+        (is (= '() res))))
     (with-redefs
       [client/get
         (fn [domain] (throw (ex-info "clj-http: status 500" {:status 500})))]
