@@ -26,9 +26,8 @@
     3 (str "⚠ Invalid Domain: " domain)))
 
 (defn- print-status [arguments]
-  (let [status (isup/run-status arguments)]
-    (doseq [res status]
-      (println (get-output res)))))
+  (doseq [arg arguments]
+    (println (-> arg (isup/run-status) (get-output)))))
 
 (defn -main
   [& args]

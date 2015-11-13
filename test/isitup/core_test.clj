@@ -14,13 +14,10 @@
 (deftest api-calls
   (testing "HTTP requests"
     (with-redefs
-      [isup/get-domain-status (fn [domain] (assoc mock-status :domain domain))]
-      (let [res (isup/run-status ["google.com"])]
-        (is (seq? res))
-        (is (= (-> res (first) :domain) "google.com")))
-      (let [res (isup/run-status ["google.com" "sapo.pt"])]
-        (is (seq? res))
-        (is (= (-> res (second) :response_code) 200))))
+      [isup/run-status* (fn [domain] (assoc mock-status :domain domain))]
+      (let [res (isup/run-status "google.com")]
+        (is (map? res))
+        (is (= (:domain res) "google.com"))))
     (with-redefs
       [client/get
         (fn [domain] {:body "{\n    \"domain\": \"google.com\",\n
@@ -28,18 +25,19 @@
                             \"response_ip\": \"127.0.0.1\",\n
                             \"response_code\": 200,\n
                             \"response_time\": 0.038\n}"})]
-      (let [res (#'isup/get-domain-status "google.com")]
+      (let [res (#'isup/run-status* "google.com")]
         (is (= (assoc mock-status :domain "google.com") res)))
       (let [res (isup/run-status "google.com")]
-        (is (= (list (assoc mock-status :domain "google.com")) res)))
-      (let [res (isup/run-status nil)]
-        (is (= '() res))))
+        (is (= (assoc mock-status :domain "google.com") res)))
+      (is (thrown-with-msg? RuntimeException
+                            #"Expected java.lang.String"
+                            (isup/run-status nil))))
     (with-redefs
       [client/get
         (fn [domain] (throw (ex-info "clj-http: status 500" {:status 500})))]
       (is (thrown-with-msg? RuntimeException
                             #"API unreachable"
-                            (#'isup/get-domain-status "google.com"))))))
+                            (#'isup/run-status* "google.com"))))))
 
 (deftest cli
   (testing "API responses"

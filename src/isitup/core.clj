@@ -15,9 +15,7 @@
   (-> (urly/url-like s)
       (urly/host-of)))
 
-(defn- get-domain-status
-  "Runs a domain check"
-  [domain]
+(defn- run-status* [domain]
   (try
     (let [sanitized (sanitize-url domain)
           res (client/get (str api sanitized ".json"))
@@ -27,11 +25,10 @@
     (throw (ex-info "API unreachable" (ex-data e))))))
 
 (defn run-status
-  "Runs the check for every argument in arguments against isitup's API. Returns
-  a (lazy) sequence of response maps"
-  [arguments]
-  (let [args (cond
-               (nil? arguments) []
-               (sequential? arguments) arguments
-               :else [arguments])]
-    (map get-domain-status args)))
+  "Runs a domain check"
+  [domain]
+  (if (string? domain)
+    (run-status* domain)
+    (throw (ex-info (str "Expected java.lang.String as the domain, got "
+                         (type domain))
+                    {}))))
