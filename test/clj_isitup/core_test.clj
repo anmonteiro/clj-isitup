@@ -1,8 +1,8 @@
-(ns isitup.core-test
+(ns clj-isitup.core-test
   (:require [clojure.test :refer [deftest testing is are]]
             [clj-http.client :as client]
-            [isitup.core :as isup]
-            [isitup.cli :as cli]))
+            [clj-isitup.core :as isup]
+            [clj-isitup.cli :as cli]))
 
 (def mock-status {:domain "google.com"
                   :port 80

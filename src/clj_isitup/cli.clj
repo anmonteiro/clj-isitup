@@ -1,16 +1,15 @@
-(ns isitup.cli
+(ns clj-isitup.cli
   (:require [clojure.tools.cli :refer [parse-opts]]
-            [isitup.core :as isup])
+            [clj-isitup.core :as isup])
   (:gen-class :main true))
 
 
 (def ^:private cli-options
-  [["-h" "--help" "Show help" :flag true :default false]
-   ["-v" "--version" "Show isitup-cli's version" :flag true :default false]])
+  [["-h" "--help" "Show help" :default false]
+   ["-v" "--version" "Show isitup-cli's version" :default false]])
 
 (defn- usage [cli-summary]
-  (println "~~ IsItUp-CLI ~~")
-  (println "Usage: isitup [-v] [-h] domain")
+  (println "Usage: isitup [-v | -h] domain")
   (println cli-summary))
 
 (defn- get-output

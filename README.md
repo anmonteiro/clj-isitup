@@ -1,6 +1,10 @@
-# isitup-cli [![Build Status](https://travis-ci.org/anmonteiro/isitup.svg)](https://travis-ci.org/anmonteiro/isitup) [![Dependencies Status](http://jarkeeper.com/anmonteiro/isitup/status.svg)](http://jarkeeper.com/anmonteiro/isitup)
+# clj-isitup [![Build Status](https://travis-ci.org/anmonteiro/isitup.svg)](https://travis-ci.org/anmonteiro/isitup) [![Dependencies Status](http://jarkeeper.com/anmonteiro/isitup/status.svg)](http://jarkeeper.com/anmonteiro/isitup)
 
-[isitup.org](http://isitup.org) API client & command-line tool.
+Latest version:
+
+  > 0.5.0
+
+clj-isitup is an [isitup.org](http://isitup.org) API client & command-line tool.
 
 ## Installation
 

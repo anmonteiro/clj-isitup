@@ -1,4 +1,4 @@
-(ns isitup.core
+(ns clj-isitup.core
   (:require [clojurewerkz.urly.core :as urly]
             [clj-http.client :as client]
             [clojure.data.json :as json])
