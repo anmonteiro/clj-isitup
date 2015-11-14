@@ -2,12 +2,17 @@
 
 Latest version:
 
-  > 0.5.0
+[![Clojars Project](http://clojars.org/clj-isitup/latest-version.svg)](http://clojars.org/clj-isitup)
 
 clj-isitup is an [isitup.org](http://isitup.org) API client & command-line tool.
 
 ## Installation
 
+```clojure
+(defproject clj-isitup-example "1.2.3"
+  :dependencies [[org.clojure/clojure "1.7.0"]
+                 [clj-isitup "0.5.1"]])
+```
 
 ## Library
 
