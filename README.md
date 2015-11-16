@@ -48,10 +48,13 @@ The table below provides the mapping between the response's `:status_code` and i
 For now (to check [Google](http://google.com)):
 
     $ lein trampoline run -- google.com
+    ✔ Up: google.com
 
 For multiple sites:
 
-    $ lein trampoline run -- google.com facebook.com
+    $ lein trampoline run -- google.com xyz.asd
+    ✔ Up: google.com
+    ✖ Down: xyz.asd
 
 ### CLI options
 
