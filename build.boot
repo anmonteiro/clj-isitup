@@ -2,7 +2,7 @@
 
 (set-env!
   :source-paths #{"src"}
-  :dependencies '[[org.clojure/tools.cli "0.3.3"]
+  :dependencies '[[org.clojure/tools.cli "0.3.5"]
                  [clj-http              "3.1.0"]
                  [clojurewerkz/urly     "1.0.0"]
                  [org.clojure/data.json "0.2.6"]

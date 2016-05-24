@@ -1,4 +1,4 @@
-# clj-isitup [![Build Status](https://travis-ci.org/anmonteiro/isitup.svg)](https://travis-ci.org/anmonteiro/isitup) [![Dependencies Status](http://jarkeeper.com/anmonteiro/isitup/status.svg)](http://jarkeeper.com/anmonteiro/isitup)
+# clj-isitup [![CircleCI](https://circleci.com/gh/anmonteiro/clj-isitup.svg?style=svg)](https://circleci.com/gh/anmonteiro/clj-isitup) [![Dependencies Status](http://jarkeeper.com/anmonteiro/isitup/status.svg)](http://jarkeeper.com/anmonteiro/isitup)
 
 Latest version:
 
