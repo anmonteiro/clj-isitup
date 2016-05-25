@@ -8,10 +8,20 @@ clj-isitup is an [isitup.org](http://isitup.org) API client & command-line tool.
 
 ## Installation
 
+Leiningen dependency information:
+
 ```clojure
-(defproject clj-isitup-example "1.2.3"
-  :dependencies [[org.clojure/clojure "1.7.0"]
-                 [clj-isitup "0.5.1"]])
+[clj-isitup "0.5.1"]
+```
+
+Maven dependency information:
+
+```xml
+<dependency>
+  <groupId>clj-isitup</groupId>
+  <artifactId>clj-isitup</artifactId>
+  <version>0.5.1</version>
+</dependency>
 ```
 
 ## Library
@@ -47,14 +57,19 @@ The table below provides the mapping between the response's `:status_code` and i
 
 For now (to check [Google](http://google.com)):
 
-    $ lein trampoline run -- google.com
+    $ ./build.boot google.com
     ✔ Up: google.com
 
 For multiple sites:
 
-    $ lein trampoline run -- google.com xyz.asd
+    $ ./build.boot google.com xyz.asd
     ✔ Up: google.com
     ✖ Down: xyz.asd
+
+Packaging & running via `java -jar`:
+
+    $ boot dist
+    $ java -jar target/project.jar google.com
 
 ### CLI options
 

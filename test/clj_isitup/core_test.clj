@@ -1,5 +1,8 @@
 (ns clj-isitup.core-test
   (:require [clojure.test :refer [deftest testing is are]]
+            [clojure.spec.test :as st]
+            [clojure.test.check :as tc]
+            [clojure.test.check.generators :as gen]
             [clj-http.client :as client]
             [clj-isitup.core :as isup]
             [clj-isitup.cli :as cli]))
@@ -11,7 +14,13 @@
                   :response_code 200
                   :response_time 0.038})
 
-(deftest api-calls
+(defmacro spec-is [res]
+  `(is (true? (:result ~res))))
+
+(deftest test-sanitize-url
+  (spec-is (st/check-var #'isup/sanitize-url)))
+
+(deftest test-api-calls
   (testing "HTTP requests"
     (with-redefs
       [isup/run-status* (fn [domain] (assoc mock-status :domain domain))]
@@ -39,7 +48,9 @@
                             #"API unreachable"
                             (#'isup/run-status* "google.com"))))))
 
-(deftest cli
+(deftest test-cli
+  (testing "version"
+    (spec-is (st/check-var #'cli/get-version)))
   (testing "API responses"
     (let [website "google.com"
           response (assoc mock-status :domain website)]

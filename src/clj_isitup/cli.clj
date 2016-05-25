@@ -1,7 +1,8 @@
 (ns clj-isitup.cli
   (:require [clojure.tools.cli :refer [parse-opts]]
+            [clojure.spec :as s]
             [clj-isitup.core :as isup])
-  (:gen-class :main true))
+  (:gen-class))
 
 
 (def ^:private cli-options
@@ -28,12 +29,18 @@
   (doseq [arg arguments]
     (println (-> arg (isup/run-status) (get-output)))))
 
+(s/fdef get-version
+  :args (s/cat)
+  :ret ::isup/nil-or-str?)
+(defn get-version []
+  (some-> "version.txt" clojure.java.io/resource slurp clojure.string/trim))
+
 (defn -main
   [& args]
   (let [{:keys [options arguments summary]} (parse-opts args cli-options)]
     (cond
       (:version options)
-      (println (str "isitup-cli's version: " (System/getProperty "isitup.version")))
+      (println (str "isitup-cli's version: " (get-version)))
 
       (or (:help options) (= (count arguments) 0))
       (usage summary)
